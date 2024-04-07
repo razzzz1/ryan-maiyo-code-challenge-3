@@ -46,7 +46,7 @@ function deleteMovie(movieId) {
     })
     .then(response => {
         if (response.ok) {
-            // Remove the movie from the list in the UI
+            // Remove the movie from the list 
             const movieElement = document.querySelector(`#id${movieId}`);
             movieElement.remove();
         } else {
