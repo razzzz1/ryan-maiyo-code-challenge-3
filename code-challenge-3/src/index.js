@@ -11,13 +11,13 @@ function getMovies() {
     fetch(mase)
     .then(res => res.json())
     .then(movies => {
-        movies.forEach(movie => {giveMovieList(movie)})
+        movies.forEach(movie => {renderMovieList(movie)})
         const firstMovie = document.querySelector("#id1");
         firstMovie.dispatchEvent(new Event("click"));
     })
 }
 // change the giveMovieList function to add delete buttons
-function giveMovieList(movie) {
+function renderMovieList(movie) {
     const li = document.createElement("li");
     li.textContent = `${movie.title}`;
     li.id = "id" + movie.id;
@@ -60,7 +60,7 @@ function deleteMovie(movieId) {
 
 //in order to handle the movie when clicked
 
-function controlMovieClick(movie) {
+function handleMovieClick(movie) {
     const poster = document.querySelector("img#poster")
     poster.src = movie.poster;
     poster.alt = movie.title;
