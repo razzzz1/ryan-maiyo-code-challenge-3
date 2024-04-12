@@ -1,14 +1,13 @@
+const db = "http://localhost:3000/films"
 
-const mase = "http://localhost:3000/films"
-
-
+//add an event listener
 document.addEventListener("DOMContentLoaded", () => {
     getMovies();
     document.querySelector("#buy-ticket").addEventListener("click", handleBuyTicket);
 });
 //introduce a function that will be used to get a specific movie
 function getMovies() {
-    fetch(mase)
+    fetch(db)
     .then(res => res.json())
     .then(movies => {
         movies.forEach(movie => {renderMovieList(movie)})
@@ -16,7 +15,8 @@ function getMovies() {
         firstMovie.dispatchEvent(new Event("click"));
     })
 }
-// change the giveMovieList function to add delete buttons
+//use another function that will render the movies' list
+// Modify the renderMovieList function to add delete buttons
 function renderMovieList(movie) {
     const li = document.createElement("li");
     li.textContent = `${movie.title}`;
@@ -46,7 +46,7 @@ function deleteMovie(movieId) {
     })
     .then(response => {
         if (response.ok) {
-            // Remove the movie from the list 
+            // Remove the movie from the list in the UI
             const movieElement = document.querySelector(`#id${movieId}`);
             movieElement.remove();
         } else {
@@ -58,8 +58,7 @@ function deleteMovie(movieId) {
     });
 }
 
-//in order to handle the movie when clicked
-
+//introduce another function that will handle the click
 function handleMovieClick(movie) {
     const poster = document.querySelector("img#poster")
     poster.src = movie.poster;
@@ -71,19 +70,21 @@ function handleMovieClick(movie) {
     info.querySelector("#showtime").textContent = movie.showtime;
     info.querySelector("#ticket-num").textContent = movie.capacity - movie.tickets_sold + " remaining tickets";
 }
-//declaring a function in order to buy tickets
-function handleBuyTicket(a) {
+//introduce another function for buying tickets
+function handleBuyTicket(e) {
+    // Get the element displaying the remaining tickets
     const ticketDiv = document.querySelector("#ticket-num");
     const tickets = ticketDiv.textContent.split(" ")[0];
+    // If tickets are available, decrement the count
     if (tickets > 0) {
         ticketDiv.textContent = tickets - 1 + " remaining tickets";
     }
+    // If no tickets are available, alert the user
     else if (tickets == 0) {
-        //when tickets are sold out
-
-        alert("No more tickets!");
-        a.target.classList.add("sold-out");
-        a.target.classList.remove("orange");
+        alert("Tickets Sold-out!!");
+        // Change the style of the "Buy Ticket" button to indicate it's sold out
+        e.target.classList.add("sold-out");
+        e.target.textContent = "Sold Out";
     }
 }
   
